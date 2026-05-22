@@ -211,6 +211,259 @@
   }
   .cal-grid .day.empty { color: transparent; }
 
+  /* ----- side stack (weather + calendar) ----- */
+  .side-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 280px;
+  }
+
+  /* ----- weather ----- */
+  .weather {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+    min-height: 110px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .weather::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--silver-2), transparent);
+    opacity: 0.35;
+  }
+  .weather-main {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .weather-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .weather-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: var(--gold-1);
+    fill: none;
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 8px rgba(232, 201, 122, 0.3));
+  }
+  .weather-icon .accent { stroke: var(--silver-1); }
+  .weather-temp {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: 2.6rem;
+    line-height: 1;
+    background: linear-gradient(180deg, var(--silver-1), var(--silver-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.01em;
+  }
+  .weather-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+  }
+  .weather-cond {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--silver-1);
+    letter-spacing: 0.01em;
+  }
+  .weather-loc {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-2);
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .weather-hilo {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+  .weather-hilo .sep { color: var(--gold-3); margin: 0 4px; }
+  .weather-loading {
+    display: flex;
+    gap: 6px;
+    margin: 0 auto;
+  }
+  .weather-loading .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--silver-3);
+    animation: blink 1.4s infinite both;
+  }
+  .weather-loading .dot:nth-child(2) { animation-delay: 0.2s; }
+  .weather-loading .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0.3; }
+    40% { opacity: 1; }
+  }
+  .weather-err {
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    font-style: italic;
+    margin: auto;
+    font-family: var(--display);
+  }
+
+  /* ---------- SKI FREE ---------- */
+  .ski-overlay {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, #1a1a1f 0%, #0a0a0c 100%);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: skiFadeIn 0.4s ease;
+  }
+  .ski-overlay.active { display: flex; }
+  @keyframes skiFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .ski-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.08;
+    pointer-events: none;
+  }
+  .ski-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 32px 36px 28px;
+    max-width: 560px;
+    width: 100%;
+    text-align: center;
+    backdrop-filter: blur(12px);
+    position: relative;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  }
+  .ski-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-2), transparent);
+  }
+  .ski-title {
+    font-family: var(--display);
+    font-size: 2.6rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    color: transparent;
+    background: linear-gradient(180deg, var(--gold-1) 0%, var(--gold-3) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-bottom: 4px;
+  }
+  .ski-subtitle {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 0.92rem;
+    margin-bottom: 22px;
+    letter-spacing: 0.04em;
+  }
+  .ski-canvas {
+    font-family: 'SF Mono', 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+    font-size: 15px;
+    line-height: 1.05;
+    color: var(--silver-2);
+    background: rgba(0, 0, 0, 0.35);
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    white-space: pre;
+    user-select: none;
+    text-align: left;
+    display: inline-block;
+    box-shadow: inset 0 0 24px rgba(0,0,0,0.4);
+    cursor: crosshair;
+  }
+  .ski-canvas .skier {
+    color: var(--gold-1);
+    text-shadow: 0 0 6px rgba(232, 201, 122, 0.7);
+    font-weight: bold;
+  }
+  .ski-canvas .yeti {
+    color: #d9b48a;
+    text-shadow: 0 0 8px rgba(217, 180, 138, 0.5);
+    font-weight: bold;
+  }
+  .ski-hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 18px;
+    color: var(--text-dim);
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .ski-score-label { color: var(--text-faint); }
+  .ski-score {
+    color: var(--gold-1);
+    font-family: var(--display);
+    font-size: 1.2rem;
+    letter-spacing: 0.12em;
+    margin-left: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ski-gameover {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold-1);
+    font-size: 1rem;
+    margin-top: 14px;
+    min-height: 1.4em;
+    letter-spacing: 0.06em;
+  }
+  .ski-online-hint {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--silver-2);
+    font-size: 0.82rem;
+    margin-top: 10px;
+    letter-spacing: 0.05em;
+  }
+  @media (max-width: 560px) {
+    .ski-canvas { font-size: 12px; padding: 10px; }
+    .ski-card { padding: 24px 18px; }
+    .ski-title { font-size: 2rem; }
+    .ski-hud { font-size: 0.62rem; flex-direction: column; gap: 4px; align-items: center; }
+  }
+
   /* ---------- SEARCH BAR ---------- */
   .search-wrap {
     margin: 0 auto 56px;
@@ -370,9 +623,11 @@
   @media (max-width: 760px) {
     .container { padding: 32px 20px 60px; }
     .top { grid-template-columns: 1fr; gap: 28px; }
+    .side-stack { min-width: unset; }
     .calendar { min-width: unset; }
     .grid { grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 10px; }
     .tile { padding: 14px 6px; }
+    .weather-temp { font-size: 2.2rem; }
   }
 
   /* entry animation */
@@ -392,12 +647,19 @@
       <div class="clock" id="clock">12<span class="colon">:</span>00<span class="meridiem">AM</span></div>
       <div class="date" id="date">Thursday, the twenty-first of May</div>
     </div>
-    <div class="calendar">
-      <div class="cal-header">
-        <span class="cal-month" id="cal-month">May</span>
-        <span class="cal-year" id="cal-year">2026</span>
+    <div class="side-stack">
+      <div class="weather" id="weather">
+        <div class="weather-loading">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
       </div>
-      <div class="cal-grid" id="cal-grid"></div>
+      <div class="calendar">
+        <div class="cal-header">
+          <span class="cal-month" id="cal-month">May</span>
+          <span class="cal-year" id="cal-year">2026</span>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
     </div>
   </div>
 
@@ -447,13 +709,14 @@
     </div>
   </section>
 
-  <!-- LISTEN & AUDIO -->
+  <!-- LISTEN & READ -->
   <section class="section reveal" style="animation-delay: 0.28s">
-    <div class="section-title">Listen &amp; Audio</div>
+    <div class="section-title">Listen &amp; Read</div>
     <div class="grid">
       <a class="tile" href="https://open.spotify.com"><div class="tile-icon"><img src="https://www.google.com/s2/favicons?domain=spotify.com&sz=64" alt=""></div><div class="tile-label">Spotify</div></a>
       <a class="tile" href="https://www.pandora.com"><div class="tile-icon"><img src="https://www.google.com/s2/favicons?domain=pandora.com&sz=64" alt=""></div><div class="tile-label">Pandora</div></a>
       <a class="tile" href="https://www.audible.com/webplayer"><div class="tile-icon"><img src="https://www.google.com/s2/favicons?domain=audible.com&sz=64" alt=""></div><div class="tile-label">Audible</div></a>
+      <a class="tile" href="https://read.amazon.com"><div class="tile-icon"><img src="https://www.google.com/s2/favicons?domain=read.amazon.com&sz=64" alt=""></div><div class="tile-label">Kindle</div></a>
     </div>
   </section>
 
@@ -502,6 +765,21 @@
 
   <div class="ornament reveal" style="animation-delay: 0.55s">tempus fugit</div>
 
+</div>
+
+<!-- SKI FREE GAME (offline / press 's') -->
+<div class="ski-overlay" id="ski-overlay">
+  <div class="ski-card">
+    <div class="ski-title">SKI&nbsp;FREE</div>
+    <div class="ski-subtitle">no signal — but the mountain awaits</div>
+    <pre class="ski-canvas" id="ski-canvas"></pre>
+    <div class="ski-hud">
+      <span><span class="ski-score-label">Score</span><span class="ski-score" id="ski-score">00000</span></span>
+      <span>← → dodge · space restart · esc exit</span>
+    </div>
+    <div class="ski-gameover" id="ski-gameover"></div>
+    <div class="ski-online-hint" id="ski-online-hint" style="display:none">~ connection restored ~</div>
+  </div>
 </div>
 
 <script>
@@ -578,6 +856,337 @@
       grid.appendChild(e);
     }
   })();
+
+  // ---------- weather ----------
+  // WMO weather code → { icon, label }
+  // is_day = 1 (day) or 0 (night)
+  function weatherInfo(code, isDay) {
+    const sun = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`;
+    const moon = `<svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+    const cloud = `<svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>`;
+    const partlyDay = `<svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3" class="accent"/><path d="M8 2v1.5M8 12.5V14M2 8h1.5M12.5 8H14M3.76 3.76l1.06 1.06M11.18 11.18l1.06 1.06M3.76 12.24l1.06-1.06M11.18 4.82l1.06-1.06" class="accent"/><path d="M19 14h-.8A5 5 0 1 0 13 20h6a3 3 0 0 0 0-6z"/></svg>`;
+    const partlyNight = `<svg viewBox="0 0 24 24"><path d="M11 4.5a4.5 4.5 0 0 0 4.5 4.5c.42 0 .82-.06 1.2-.17A4.5 4.5 0 1 1 10.83 3.3c.05.4.17.78.17 1.2z" class="accent"/><path d="M19 14h-.8A5 5 0 1 0 13 20h6a3 3 0 0 0 0-6z"/></svg>`;
+    const fog = `<svg viewBox="0 0 24 24"><path d="M3 8h12M5 12h14M3 16h12M5 20h14"/></svg>`;
+    const rain = `<svg viewBox="0 0 24 24"><path d="M18 8h-1.26A6 6 0 1 0 9 16h9a4 4 0 0 0 0-8z"/><path d="M8 19v2M12 19v2M16 19v2" class="accent"/></svg>`;
+    const snow = `<svg viewBox="0 0 24 24"><path d="M18 8h-1.26A6 6 0 1 0 9 16h9a4 4 0 0 0 0-8z"/><circle cx="8" cy="20" r="0.8" class="accent" fill="currentColor"/><circle cx="12" cy="20" r="0.8" class="accent" fill="currentColor"/><circle cx="16" cy="20" r="0.8" class="accent" fill="currentColor"/></svg>`;
+    const thunder = `<svg viewBox="0 0 24 24"><path d="M18 8h-1.26A6 6 0 1 0 9 16h9a4 4 0 0 0 0-8z"/><path d="M11 14l-2 4h3l-1 3 3-4h-2l1-3z" class="accent" fill="currentColor"/></svg>`;
+    const drizzle = `<svg viewBox="0 0 24 24"><path d="M18 8h-1.26A6 6 0 1 0 9 16h9a4 4 0 0 0 0-8z"/><path d="M9 19v1M13 19v1M17 19v1" class="accent"/></svg>`;
+
+    if (code === 0) return { icon: isDay ? sun : moon, label: 'Clear' };
+    if (code === 1) return { icon: isDay ? sun : moon, label: 'Mainly Clear' };
+    if (code === 2) return { icon: isDay ? partlyDay : partlyNight, label: 'Partly Cloudy' };
+    if (code === 3) return { icon: cloud, label: 'Overcast' };
+    if (code === 45 || code === 48) return { icon: fog, label: 'Foggy' };
+    if (code >= 51 && code <= 57) return { icon: drizzle, label: 'Drizzle' };
+    if (code >= 61 && code <= 67) return { icon: rain, label: 'Rain' };
+    if (code >= 71 && code <= 77) return { icon: snow, label: 'Snow' };
+    if (code >= 80 && code <= 82) return { icon: rain, label: 'Rain Showers' };
+    if (code === 85 || code === 86) return { icon: snow, label: 'Snow Showers' };
+    if (code >= 95) return { icon: thunder, label: 'Thunderstorm' };
+    return { icon: cloud, label: 'Unknown' };
+  }
+
+  async function loadWeather() {
+    const weatherEl = document.getElementById('weather');
+
+    // try cache first for instant render
+    try {
+      const cached = JSON.parse(localStorage.getItem('weather-cache') || 'null');
+      if (cached && Date.now() - cached.t < 15 * 60 * 1000) {
+        renderWeather(cached.data);
+        return;
+      }
+    } catch (e) {}
+
+    // get coords: try geolocation, fall back to IP-based
+    const getCoords = () => new Promise((resolve) => {
+      if (!navigator.geolocation) return resolve(null);
+      navigator.geolocation.getCurrentPosition(
+        (pos) => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+        () => resolve(null),
+        { timeout: 4000, maximumAge: 600000 }
+      );
+    });
+
+    try {
+      let coords = await getCoords();
+      let locName = null;
+
+      // fallback to IP-based geolocation if browser geolocation denied/failed
+      if (!coords) {
+        try {
+          const ipRes = await fetch('https://ipapi.co/json/');
+          const ipData = await ipRes.json();
+          coords = { lat: ipData.latitude, lon: ipData.longitude };
+          locName = ipData.city ? `${ipData.city}, ${ipData.region_code || ipData.country_code}` : null;
+        } catch (e) {
+          throw new Error('No location available');
+        }
+      }
+
+      const { lat, lon } = coords;
+
+      // fetch weather
+      const wRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,is_day&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=auto&forecast_days=1`);
+      const wData = await wRes.json();
+
+      // reverse geocode if we don't have a name yet
+      if (!locName) {
+        try {
+          const gRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
+          const gData = await gRes.json();
+          const city = gData.city || gData.locality || gData.principalSubdivision || '';
+          const region = gData.principalSubdivisionCode ? gData.principalSubdivisionCode.split('-').pop() : (gData.countryCode || '');
+          locName = city ? (region ? `${city}, ${region}` : city) : 'Local';
+        } catch (e) {
+          locName = 'Local';
+        }
+      }
+
+      const data = {
+        temp: Math.round(wData.current.temperature_2m),
+        code: wData.current.weather_code,
+        isDay: wData.current.is_day,
+        hi: Math.round(wData.daily.temperature_2m_max[0]),
+        lo: Math.round(wData.daily.temperature_2m_min[0]),
+        loc: locName
+      };
+
+      localStorage.setItem('weather-cache', JSON.stringify({ t: Date.now(), data }));
+      renderWeather(data);
+    } catch (e) {
+      weatherEl.innerHTML = '<div class="weather-err">weather unavailable</div>';
+    }
+  }
+
+  function renderWeather(d) {
+    const { icon, label } = weatherInfo(d.code, d.isDay);
+    document.getElementById('weather').innerHTML = `
+      <div class="weather-main">
+        <div class="weather-icon">${icon}</div>
+        <div class="weather-temp">${d.temp}°</div>
+      </div>
+      <div class="weather-detail">
+        <div class="weather-cond">${label}</div>
+        <div class="weather-loc">${d.loc}</div>
+        <div class="weather-hilo">H ${d.hi}°<span class="sep">·</span>L ${d.lo}°</div>
+      </div>
+    `;
+  }
+
+  loadWeather();
+
+  // ---------- ski free (offline mini-game) ----------
+  (function() {
+    const W = 38, H = 16;
+    const SKI_ROW = 11;
+    const TICK_MS = 130;
+
+    let state = {
+      skiX: 18, obstacles: [], score: 0,
+      running: false, over: false, yeti: null, trail: []
+    };
+    let interval = null;
+
+    const overlay = document.getElementById('ski-overlay');
+    const canvas = document.getElementById('ski-canvas');
+    const scoreEl = document.getElementById('ski-score');
+    const gameOverEl = document.getElementById('ski-gameover');
+    const onlineHint = document.getElementById('ski-online-hint');
+
+    function reset() {
+      state = {
+        skiX: Math.floor(W / 2),
+        obstacles: [], score: 0,
+        running: true, over: false, yeti: null,
+        trail: []
+      };
+      gameOverEl.textContent = '';
+      if (interval) clearInterval(interval);
+      interval = setInterval(tick, TICK_MS);
+      render();
+    }
+
+    function tick() {
+      if (!state.running) return;
+
+      // scroll obstacles upward (world moves toward skier)
+      state.obstacles = state.obstacles
+        .map(o => ({ ...o, y: o.y - 1 }))
+        .filter(o => o.y > 0);
+
+      // spawn new obstacles at bottom
+      const density = Math.min(0.5, 0.25 + state.score / 2000);
+      if (Math.random() < density) {
+        const r = Math.random();
+        let type;
+        if (r < 0.55) type = 'Y';      // tree
+        else if (r < 0.75) type = 'T'; // tall tree
+        else if (r < 0.92) type = 'o'; // mogul
+        else type = 'O';               // rock
+        state.obstacles.push({
+          x: 2 + Math.floor(Math.random() * (W - 4)),
+          y: H - 2, type
+        });
+      }
+
+      // yeti appears after 150 points
+      if (state.score > 150 && !state.yeti) {
+        state.yeti = { x: state.skiX, y: H - 2 };
+      }
+      if (state.yeti) {
+        state.yeti.y -= 0.35;
+        if (state.yeti.x < state.skiX) state.yeti.x += 0.4;
+        else if (state.yeti.x > state.skiX) state.yeti.x -= 0.4;
+        const yx = Math.round(state.yeti.x), yy = Math.round(state.yeti.y);
+        if (yy === SKI_ROW && Math.abs(yx - state.skiX) <= 1) {
+          endGame('caught by the yeti');
+          return;
+        }
+        if (yy < 1) state.yeti = null; // escaped above
+      }
+
+      // collision with obstacles
+      const hit = state.obstacles.find(o => o.y === SKI_ROW && o.x === state.skiX);
+      if (hit) {
+        endGame(hit.type === 'O' ? 'crashed into a rock' : 'hit a tree');
+        return;
+      }
+
+      // trail (last few skier positions)
+      state.trail.unshift({ x: state.skiX, y: SKI_ROW });
+      state.trail = state.trail.slice(0, 4).map((t, i) => ({ ...t, y: t.y - i }));
+
+      state.score++;
+      render();
+    }
+
+    function render() {
+      const grid = [];
+      for (let y = 0; y < H; y++) grid.push(new Array(W).fill(' '));
+
+      // border (top/bottom dotted, sides treeline)
+      for (let x = 0; x < W; x++) {
+        grid[0][x] = '~';
+        grid[H - 1][x] = '~';
+      }
+      for (let y = 0; y < H; y++) {
+        grid[y][0] = ':';
+        grid[y][W - 1] = ':';
+      }
+
+      // ski trail (above skier, fading)
+      const trailChars = ['"', "'", '.', '.'];
+      state.trail.forEach((t, i) => {
+        if (t.y > 0 && t.y < H - 1 && t.x > 0 && t.x < W - 1) {
+          grid[t.y][t.x] = trailChars[i] || '.';
+        }
+      });
+
+      // obstacles
+      state.obstacles.forEach(o => {
+        if (o.y > 0 && o.y < H - 1 && o.x > 0 && o.x < W - 1) {
+          grid[o.y][o.x] = o.type;
+        }
+      });
+
+      // yeti (rendered before skier so skier appears on top if same cell)
+      if (state.yeti) {
+        const yx = Math.round(state.yeti.x), yy = Math.round(state.yeti.y);
+        if (yy > 0 && yy < H - 1 && yx > 0 && yx < W - 1) {
+          grid[yy][yx] = '\u0002';
+        }
+      }
+
+      // skier
+      grid[SKI_ROW][state.skiX] = '\u0001';
+
+      let html = grid.map(r => r.join('')).join('\n');
+      html = html
+        .replace(/\u0001/g, '<span class="skier">H</span>')
+        .replace(/\u0002/g, '<span class="yeti">M</span>');
+      canvas.innerHTML = html;
+      scoreEl.textContent = String(state.score).padStart(5, '0');
+    }
+
+    function endGame(reason) {
+      state.running = false;
+      state.over = true;
+      clearInterval(interval);
+      gameOverEl.textContent = `~ ${reason} ~ press space to ski again`;
+    }
+
+    // controls
+    document.addEventListener('keydown', (e) => {
+      // global secret: press 's' to summon when game is closed
+      if (!overlay.classList.contains('active')) {
+        const tag = (document.activeElement && document.activeElement.tagName) || '';
+        if (e.key === 's' && tag !== 'INPUT' && tag !== 'TEXTAREA') {
+          showGame();
+          e.preventDefault();
+        }
+        return;
+      }
+
+      // in-game controls
+      if (e.key === 'ArrowLeft' || e.key === 'a') {
+        if (state.running && state.skiX > 1) state.skiX--;
+        e.preventDefault();
+      } else if (e.key === 'ArrowRight' || e.key === 'd') {
+        if (state.running && state.skiX < W - 2) state.skiX++;
+        e.preventDefault();
+      } else if (e.key === ' ' && state.over) {
+        reset();
+        e.preventDefault();
+      } else if (e.key === 'Escape') {
+        hideGame();
+        e.preventDefault();
+      }
+    });
+
+    // touch / click controls
+    canvas.addEventListener('click', (e) => {
+      if (state.over) { reset(); return; }
+      if (!state.running) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      if (x < rect.width / 2) {
+        if (state.skiX > 1) state.skiX--;
+      } else {
+        if (state.skiX < W - 2) state.skiX++;
+      }
+    });
+
+    function showGame() {
+      overlay.classList.add('active');
+      onlineHint.style.display = navigator.onLine ? 'block' : 'none';
+      reset();
+    }
+
+    function hideGame() {
+      overlay.classList.remove('active');
+      if (interval) clearInterval(interval);
+      state.running = false;
+    }
+
+    // offline detection
+    window.addEventListener('offline', showGame);
+    window.addEventListener('online', () => {
+      if (overlay.classList.contains('active')) {
+        onlineHint.style.display = 'block';
+      }
+    });
+
+    // initial: if loaded while offline, show the game
+    if (!navigator.onLine) showGame();
+
+    // expose for the ornament click
+    window.__ski = showGame;
+  })();
+
+  // make the footer ornament a secret trigger
+  document.querySelector('.ornament').addEventListener('click', () => window.__ski && window.__ski());
+  document.querySelector('.ornament').style.cursor = 'pointer';
 </script>
 </body>
 </html>
