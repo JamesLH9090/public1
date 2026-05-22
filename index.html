@@ -376,6 +376,33 @@
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--gold-2), transparent);
   }
+  .ski-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--silver-2);
+    font-size: 1.5rem;
+    line-height: 1;
+    font-family: var(--ui);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ski-close:hover, .ski-close:active {
+    background: rgba(232, 201, 122, 0.12);
+    border-color: var(--gold-2);
+    color: var(--gold-1);
+    transform: rotate(90deg);
+  }
   .ski-title {
     font-family: var(--display);
     font-size: 2.6rem;
@@ -770,12 +797,13 @@
 <!-- SKI FREE GAME (offline / press 's') -->
 <div class="ski-overlay" id="ski-overlay">
   <div class="ski-card">
+    <button class="ski-close" id="ski-close" aria-label="Close ski game">×</button>
     <div class="ski-title">SKI&nbsp;FREE</div>
     <div class="ski-subtitle">no signal — but the mountain awaits</div>
     <pre class="ski-canvas" id="ski-canvas"></pre>
     <div class="ski-hud">
       <span><span class="ski-score-label">Score</span><span class="ski-score" id="ski-score">00000</span></span>
-      <span>← → dodge · space restart · esc exit</span>
+      <span>tap sides to dodge · tap × to exit</span>
     </div>
     <div class="ski-gameover" id="ski-gameover"></div>
     <div class="ski-online-hint" id="ski-online-hint" style="display:none">~ connection restored ~</div>
@@ -1155,6 +1183,12 @@
       } else {
         if (state.skiX < W - 2) state.skiX++;
       }
+    });
+
+    // close button (mobile-friendly exit)
+    document.getElementById('ski-close').addEventListener('click', (e) => {
+      e.stopPropagation();
+      hideGame();
     });
 
     function showGame() {
